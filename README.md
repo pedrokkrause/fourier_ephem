@@ -5,7 +5,7 @@ This is a recreative project to develop a simple ephemeris. This was done by per
 
 There are 20, 8 and 9 terms for the longitude, latitude and distance of the Moon, respectively. For the Sun, the distance is only given by one sine wave, and its latitude and logitude is assumed to be 0. 
 
-Regarding the precision, the root-mean-square deviation of the Moon's latitude, longitude and distance in the fitted period are 40", 51" and 165 km. While this is extremely high for today's standards, this is sufficiently accurate to predict eclipses. Below is the total solar eclipse of August 2, 2027. Note, that it can also predict eclipses from the year 3000, so it may be considered sufficiently accurate for many centuries.
+Regarding the precision, the root-mean-square deviation of the Moon's latitude, longitude and distance in the fitted period are 40", 51" and 165 km. While this is extremely high for today's standards, this is sufficiently accurate to predict eclipses. Below is the total solar eclipse of August 2, 2027. Note, that it can also predict eclipses from the year 3000, so it may be considered sufficiently accurate for many centuries. The eclipses can be animated using the eclipseAnimation.py file.
 
 ![anigif](https://github.com/PedroKKr/fourierEphem/assets/52111108/2182c447-dc76-451c-a769-c4d6ca8b9768)
 
