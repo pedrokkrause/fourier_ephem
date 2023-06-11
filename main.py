@@ -1,24 +1,26 @@
 import numpy as np
 
 # Load data
-lon_omega = np.load("lon_freq", allow_pickle=True) * 2 * np.pi
-lon_amp = np.load("lon_amp", allow_pickle=True)
-lon_phases = np.load("lon_phases", allow_pickle=True)
+lon_omega = np.load("data/lon_freq", allow_pickle=True) * 2 * np.pi
+lon_amp = np.load("data/lon_amp", allow_pickle=True)
+lon_phases = np.load("data/lon_phases", allow_pickle=True)
 
-lat_omega = np.load("lat_freq", allow_pickle=True) * 2 * np.pi
-lat_amp = np.load("lat_amp", allow_pickle=True)
-lat_phases = np.load("lat_phases", allow_pickle=True)
+lat_omega = np.load("data/lat_freq", allow_pickle=True) * 2 * np.pi
+lat_amp = np.load("data/lat_amp", allow_pickle=True)
+lat_phases = np.load("data/lat_phases", allow_pickle=True)
 
-dis_omega = np.load("dis_freq", allow_pickle=True) * 2 * np.pi
-dis_amp = np.load("dis_amp", allow_pickle=True)
-dis_phases = np.load("dis_phases", allow_pickle=True)
+dis_omega = np.load("data/dis_freq", allow_pickle=True) * 2 * np.pi
+dis_amp = np.load("data/dis_amp", allow_pickle=True)
+dis_phases = np.load("data/dis_phases", allow_pickle=True)
 
 
 def moon_gse(t: float) -> tuple:
     """
-    Returns the moon latitude(°), longitude(°) and radial distance(km) in Geocentric Solar Ecliptic (GSE) coordinates
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00
-    :return: (latitude, longitude, distance)
+    Calculates the moon latitude(°), longitude(°) and radial distance(km) in Geocentric Solar Ecliptic (GSE) coordinates
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: A tuple containing the moon's latitude, longitude, and radial distance
+             in GSE coordinates in the format (latitude, longitude, distance).
     """
     lon = lon_amp.dot(np.sin(t * lon_omega + lon_phases)) + 360 / 29.530589 * t - 262827.5235067
     lat = lat_amp.dot(np.sin(t * lat_omega + lat_phases))
@@ -27,17 +29,19 @@ def moon_gse(t: float) -> tuple:
 
 def sun_distance(t: float) -> float:
     """
-    Returns the sun's radial distance(km)
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00
-    :return: distance
+    Calculates the sun's radial distance(km) from Earth
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: Distance (km) of the Sun from the Earth's center
     """
     dis = 149618828.7 + 2499293.007*np.sin(0.017201970017786433*t-1.62743406471495)
     return dis
 
 def obliquity(t: float) -> float:
     """
-    Returns the obliquity of the ecliptic in degrees
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00
+    Calculates the obliquity of the ecliptic in degrees
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
     :return: Obliquity of the ecliptic (°)
     """
     obl = 23.45229001425579 - 0.000000356200235759373*t
@@ -51,20 +55,39 @@ norm = lambda x: np.sqrt(x.dot(x))
 norm2 = lambda x: x.dot(x)
 anglew = lambda u, v: np.arccos(u.dot(v)/np.sqrt(norm2(u)*norm2(v)))
 
-def mean_anomaly(t):
+def mean_anomaly(t: float) -> float:
+    """
+    Calculates the mean anomaly of the Earth's orbit
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: Mean anomaly (rad) of Earth's orbit
+    """
     # Earth-Moon barycenter perihelion
     t0 = 36528.9967245370
     ma = 2*np.pi/365.24218*(t-t0)
     return ma
 
-def true_anomaly(t):
+def true_anomaly(t: float) -> float:
+    """
+    Calculates the true anomaly of the Earth's orbit using the equation of the center
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: True anomaly (rad) of Earth's orbit
+    """
     ma = mean_anomaly(t)
     ec = 0.01671022
-    # Equation of center
     ta = ma + (2*ec-1/4*ec**3 + 5/96*ec**5)*np.sin(ma) + (5/4*ec**2-11/24*ec**4)*np.sin(2*ma) + 13/12*ec**3*np.sin(3*ma)
     return ta
 
-def observer_position(t,lat,lon):
+def observer_position(t: float,lat: float,lon: float):
+    """
+    Calculates the cartesian coordinates of an observer at a given latitude and longitude in the GSE coordinate system
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param lat: Geographic latitude in decimal degrees, ranging from -90 (South Pole) to +90 (North Pole)
+    :param lon: Geographic longitude in decimal degrees, ranging from -180 (West) to +180 (East)
+    :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the observer in the GSE coordinate system.
+    """
     lat, lon = np.deg2rad(lat), np.deg2rad(lon)
     # March equinox
     t0 = 36605.3161689815
@@ -90,11 +113,22 @@ def observer_position(t,lat,lon):
     pos = orbit_rotation @ equinox_rotation @ day_rotation @ pos0
     return pos*earth_radius
 
-def sun_position(t):
-    pos = np.array([sun_distance(t),0,0])
-    return pos
+def sun_position(t: float):
+    """
+    Calculates the cartesian coordinates of the Sun in the GSE coordinate system
 
-def moon_position(t):
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the Sun in the GSE coordinate system.
+    """
+    return np.array([sun_distance(t),0,0])
+
+def moon_position(t: float):
+    """
+    Calculates the cartesian coordinates of the Moon in the GSE coordinate system
+
+    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the Moon in the GSE coordinate system.
+    """
     lat, lon, dis = moon_gse(t)
     lat, lon = np.deg2rad(lat), np.deg2rad(lon)
 
@@ -105,22 +139,55 @@ def moon_position(t):
 
     return np.array([x,y,z])
 
-def alt(body,obs):
+def alt(obs,body) -> float:
+    """
+    Calculates the altitude of an object for a given observer in the alt/az or horizontal coordinate system
+
+    :param body: A 1-D Numpy array containing the coordinates of the celestial body required altitude
+    :param obs: A 1-D Numpy array containing the coordinates of the observer
+    :return: The altitude angle of the body with respect to the observer in degrees.
+    """
     body = body - obs
     angle = np.pi/2 - anglew(body,obs)
     return np.rad2deg(angle)
 
-def separation(obs,body1,body2):
+def separation(obs,body1,body2) -> float:
+    """
+    The angular distance between two celestial bodies for a given observer
+
+    :param obs: A 1-D Numpy array containing the coordinates of the observer
+    :param body1: A 1-D Numpy array containing the coordinates of the first celestial body
+    :param body2: A 1-D Numpy array containing the coordinates of the second celestial body
+    :return: The angular distance between the two bodies in degrees
+    """
     obs_body1 = body1-obs
     obs_body2 = body2-obs
     return anglew(obs_body1,obs_body2)
 
-def angular_radius(obs,body,radius):
+def angular_radius(obs,body,radius) -> float:
+    """
+    The angular radius or half the angular size of a celestial body for a given observer
+
+    :param obs: A 1-D Numpy array containing the coordinates of the observer
+    :param body: A 1-D Numpy array containing the coordinates of the celestial body
+    :param radius: The true radius of the body
+    :return: The angular radius of the given body in degrees
+    """
     distance = norm(body-obs)
     angle = np.rad2deg(radius/distance)
     return angle
 
-def overlap(obs,body1,body2,body1_radius,body2_radius):
+def overlap(obs,body1,body2,body1_radius,body2_radius) -> float:
+    """
+    Calculate the fraction of the first celestial body that is occulted by the second celestial body.
+
+    :param obs: A 1-D Numpy array containing the coordinates of the observer (x, y, z)
+    :param body1: A 1-D Numpy array containing the coordinates of the first celestial body (x, y, z)
+    :param body2: A 1-D Numpy array containing the coordinates of the second celestial body (x, y, z)
+    :param body1_radius: A float representing the radius of the first celestial body
+    :param body2_radius: A float representing the radius of the second celestial body
+    :return: A float representing the fraction of the first celestial body that is occulted by the second celestial body.
+    """
     obs_body1 = body1 - obs
     obs_body2 = body2 - obs
     norm_b1 = norm(obs_body1)

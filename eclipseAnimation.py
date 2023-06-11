@@ -43,7 +43,7 @@ for i in range(70):
                                  np.sin(lat)]) * earth_radius
                 observer = rot_matrix @ pos0
                 ocultation = 1-overlap(observer,sun,moon,sun_radius,moon_radius)
-                memo[(lat,lon)] = (ocultation, alt(sun,observer) >= 0)
+                memo[(lat,lon)] = (ocultation, alt(observer, sun) >= 0)
             if ocultation < 1 and visible:
                 original = pixels[x,y]
                 pixels[x,y] = (round(ocultation*original[0]),round(ocultation*original[1]),round(ocultation*original[2]))
