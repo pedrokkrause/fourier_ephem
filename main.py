@@ -1,4 +1,5 @@
 import numpy as np
+from datetime import datetime
 
 # Load data
 lon_omega = np.load("data/lon_freq", allow_pickle=True) * 2 * np.pi
@@ -14,11 +15,20 @@ dis_amp = np.load("data/dis_amp", allow_pickle=True)
 dis_phases = np.load("data/dis_phases", allow_pickle=True)
 
 
+def get_date(year,month,day,hour=0,minute=0,second=0) -> float:
+    """
+    Calculates the given date in the format used by the program
+
+    :return: Date in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
+    """
+    date = datetime(year,month,day,hour,minute,second) - datetime(1899,12,30)
+    return date.total_seconds()/86400
+
 def moon_gse(t: float) -> tuple:
     """
     Calculates the moon latitude(°), longitude(°) and radial distance(km) in Geocentric Solar Ecliptic (GSE) coordinates
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: A tuple containing the moon's latitude, longitude, and radial distance
              in GSE coordinates in the format (latitude, longitude, distance).
     """
@@ -31,7 +41,7 @@ def sun_distance(t: float) -> float:
     """
     Calculates the sun's radial distance(km) from Earth
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: Distance (km) of the Sun from the Earth's center
     """
     dis = 149618828.7 + 2499293.007*np.sin(0.017201970017786433*t-1.62743406471495)
@@ -41,7 +51,7 @@ def obliquity(t: float) -> float:
     """
     Calculates the obliquity of the ecliptic in degrees
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: Obliquity of the ecliptic (°)
     """
     obl = 23.45229001425579 - 0.000000356200235759373*t
@@ -59,7 +69,7 @@ def mean_anomaly(t: float) -> float:
     """
     Calculates the mean anomaly of the Earth's orbit
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: Mean anomaly (rad) of Earth's orbit
     """
     # Earth-Moon barycenter perihelion
@@ -71,7 +81,7 @@ def true_anomaly(t: float) -> float:
     """
     Calculates the true anomaly of the Earth's orbit using the equation of the center
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: True anomaly (rad) of Earth's orbit
     """
     ma = mean_anomaly(t)
@@ -79,14 +89,17 @@ def true_anomaly(t: float) -> float:
     ta = ma + (2*ec-1/4*ec**3 + 5/96*ec**5)*np.sin(ma) + (5/4*ec**2-11/24*ec**4)*np.sin(2*ma) + 13/12*ec**3*np.sin(3*ma)
     return ta
 
-def observer_position(t: float,lat: float,lon: float):
+def observer_position(t: float,lat: float,lon: float,return_rotation=False):
     """
     Calculates the cartesian coordinates of an observer at a given latitude and longitude in the GSE coordinate system
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :param lat: Geographic latitude in decimal degrees, ranging from -90 (South Pole) to +90 (North Pole)
     :param lon: Geographic longitude in decimal degrees, ranging from -180 (West) to +180 (East)
-    :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the observer in the GSE coordinate system.
+    :return: If return_rotation is false, a 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the observer
+             in the GSE coordinate system.
+             If return_rotation is true, it also returns a rotation matrix needed for certain calculations,
+             such as the azimuth.
     """
     lat, lon = np.deg2rad(lat), np.deg2rad(lon)
     # March equinox
@@ -110,14 +123,19 @@ def observer_position(t: float,lat: float,lon: float):
                              [-np.sin(ta), np.cos(ta), 0],
                              [0, 0, 1]])
 
-    pos = orbit_rotation @ equinox_rotation @ day_rotation @ pos0
-    return pos*earth_radius
+    if return_rotation:
+        rotation = orbit_rotation @ equinox_rotation @ day_rotation
+        pos = rotation @ pos0
+        return pos*earth_radius, rotation
+    else:
+        pos = orbit_rotation @ equinox_rotation @ day_rotation @ pos0
+        return pos*earth_radius
 
 def sun_position(t: float):
     """
     Calculates the cartesian coordinates of the Sun in the GSE coordinate system
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the Sun in the GSE coordinate system.
     """
     return np.array([sun_distance(t),0,0])
@@ -126,7 +144,7 @@ def moon_position(t: float):
     """
     Calculates the cartesian coordinates of the Moon in the GSE coordinate system
 
-    :param t: Time in Excel format. Days (24h) since 31/12/1899 00:00:00 UTC
+    :param t: Time in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
     :return: A 1-D numpy array containing the 3D coordinates (X, Y, and Z) of the Moon in the GSE coordinate system.
     """
     lat, lon, dis = moon_gse(t)
@@ -143,13 +161,24 @@ def alt(obs,body) -> float:
     """
     Calculates the altitude of an object for a given observer in the alt/az or horizontal coordinate system
 
-    :param body: A 1-D Numpy array containing the coordinates of the celestial body required altitude
-    :param obs: A 1-D Numpy array containing the coordinates of the observer
+    :param body: A 1-D Numpy array containing the GSE coordinates of the celestial body required altitude
+    :param obs: A 1-D Numpy array containing the GSE coordinates of the observer
     :return: The altitude angle of the body with respect to the observer in degrees.
     """
     body = body - obs
     angle = np.pi/2 - anglew(body,obs)
     return np.rad2deg(angle)
+
+def az(obs,rotation,body) -> tuple:
+    az_vec = body - obs*(obs.dot(body)/obs.dot(obs))
+    north_vec = rotation @ np.array([0,0,1])
+    north_vec = north_vec*(obs.dot(obs)/north_vec.dot(obs)) - obs
+    azimuth = np.rad2deg(anglew(az_vec,north_vec))
+    if np.cross(north_vec,az_vec).dot(obs) < 0:
+        azimuth += 180
+    else:
+        azimuth = 180 - azimuth
+    return azimuth
 
 def separation(obs,body1,body2) -> float:
     """
