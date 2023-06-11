@@ -161,8 +161,8 @@ def alt(obs,body) -> float:
     """
     Calculates the altitude of an object for a given observer in the alt/az or horizontal coordinate system
 
-    :param body: A 1-D Numpy array containing the GSE coordinates of the celestial body required altitude
     :param obs: A 1-D Numpy array containing the GSE coordinates of the observer
+    :param body: A 1-D Numpy array containing the GSE coordinates of the celestial body required altitude
     :return: The altitude angle of the body with respect to the observer in degrees.
     """
     body = body - obs
@@ -170,6 +170,14 @@ def alt(obs,body) -> float:
     return np.rad2deg(angle)
 
 def az(obs,rotation,body) -> tuple:
+    """
+    Calculates the azimuth of an object for a given observer in the alt/az or horizontal coordinate system
+
+    :param obs: A 1-D Numpy array containing the GSE coordinates of the observer
+    :param rotation: The rotation matrix associated with the observer. Given by the observer_position function
+    :param body: A 1-D Numpy array containing the GSE coordinates of the celestial body required azimuth
+    :return: The azimuth angle of the body with respect to the observer in degrees.
+    """
     az_vec = body - obs*(obs.dot(body)/obs.dot(obs))
     north_vec = rotation @ np.array([0,0,1])
     north_vec = north_vec*(obs.dot(obs)/north_vec.dot(obs)) - obs
