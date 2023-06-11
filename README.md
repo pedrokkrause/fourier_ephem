@@ -16,9 +16,9 @@ The root-mean-square deviation of the Moon's latitude, longitude, and distance i
 
 ## Features
 
-The Fourier Ephemeris currently supports the following features:
+The ephemeris currently supports the following calculations:
 
-- Calculation of the Cartesian position of the Sun and the Moon in the GSE system
-- Computation of the altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
-- Estimation of the angular distance and apparent intersection of the Sun and the Moon, useful for eclipse calculations
-- Calculation of the obliquity of the ecliptic, mean and true anomaly of the Earth
+- Position of the Sun and the Moon in the GSE system
+- Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
+- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations
+- Obliquity of the ecliptic, mean and true anomaly of the Earth
