@@ -9,4 +9,8 @@ Regarding the precision, the root-mean-square deviation of the Moon's latitude, 
 
 ![anigif](https://github.com/PedroKKr/fourierEphem/assets/52111108/2182c447-dc76-451c-a769-c4d6ca8b9768)
 
-The main usage of this ephemeris is to calculate the position of the Sun and the Moon for a given latitude and longitude. As of now, it can only calculate the altitude, not the azimuth, which will be futurely added.
+Currently, this ephemeris can:
+- Calculate the cartesian position of the Sun and the Moon in GSE coordinates;
+- Calculate the altitude and azimuth of the Sun and the Moon for an observer at a given latitude and longitude;
+- Calculate the angular distance and apparent intersection of the Sun and the Moon, which is useful for eclipse calculations;
+- Calculate the obliquity of the ecliptic, mean and true anomaly of the  Earth.
