@@ -10,7 +10,7 @@ The ephemeris contains 20, 8, and 9 terms for the longitude, latitude, and dista
 
 ## Precision
 
-The root-mean-square deviation of the Moon's latitude, longitude, and distance in the fitted period is 40", 51", and 165 km, respectively. While this level of precision may be considered high by modern standards, it is sufficient for predicting eclipses, as demonstrated below with the total solar eclipse of August 2, 2027. Note that the ephemeris can predict eclipses even from the year 3000, rendering it accurate enough for many centuries. Eclipse animations can be created using the `eclipseAnimation.py` file.
+The root-mean-square deviation of the Moon's latitude, longitude, and distance in the fitted period is 40", 51", and 165 km, respectively. While this level of precision may be considered high by modern standards, it is sufficient for predicting eclipses, as demonstrated below with the total solar eclipse of August 2, 2027. Note that the ephemeris can predict eclipses even from the year 3000, rendering it accurate enough for many centuries.
 
 ![anigif](https://github.com/PedroKKr/fourierEphem/assets/52111108/2182c447-dc76-451c-a769-c4d6ca8b9768)
 
@@ -20,5 +20,5 @@ The ephemeris currently supports the following calculations:
 
 - Position of the Sun and the Moon in the GSE system
 - Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
-- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations
+- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations (Eclipse animations can be created using the `eclipseAnimation.py` file and eclipses within a time range can be searched with `searchEclipses.py`)
 - Obliquity of the ecliptic, mean and true anomaly of the Earth
