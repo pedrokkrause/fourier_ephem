@@ -20,5 +20,5 @@ The ephemeris currently supports the following calculations:
 
 - Position of the Sun and the Moon in the GSE system
 - Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
-- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations (Eclipse animations can be created using the `eclipseAnimation.py` file and eclipses within a time range can be searched with `searchEclipses.py`)
+- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations (Eclipse animations can be created using the `eclipseAnimation.py` file and eclipses within a time range can be found using the `searchEclipses.py` file)
 - Obliquity of the ecliptic, mean and true anomaly of the Earth
