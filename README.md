@@ -1,12 +1,24 @@
 # Fourier Ephemeris
-A not so accurate ephemeris for the Sun and the Moon using a sum of sines approximation.
--
-This is a recreative project to develop a simple ephemeris. This was done by performing a fourier transform on the Geocentric Solar Ecliptic (GSE) coordinates of the Moon and then perfoming a least squares fit, using data from NASA's [SSC Locator Form](https://sscweb.gsfc.nasa.gov/cgi-bin/Locator.cgi) from 1959 to 2040. 
 
-There are 20, 8 and 9 terms for the longitude, latitude and distance of the Moon, respectively. For the Sun, the distance is only given by one sine wave, and its latitude and logitude is assumed to be 0. 
+An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation.
 
-Regarding the precision, the root-mean-square deviation of the Moon's latitude, longitude and distance in the fitted period are 40", 51" and 165 km. While this is extremely high for today's standards, this is sufficiently accurate to predict eclipses. Below is the total solar eclipse of August 2, 2027. Note, that it can also predict eclipses from the year 3000, so it may be considered sufficiently accurate for many centuries. The eclipses can be animated using the eclipseAnimation.py file.
+## Introduction
+
+This recreational project presents a simple ephemeris developed by performing a Fourier transform on the Geocentric Solar Ecliptic (GSE) coordinates of the Moon and applying a least squares fit. The data used for this project is sourced from NASA's [SSC Locator Form](https://sscweb.gsfc.nasa.gov/cgi-bin/Locator.cgi) and spans from 1959 to 2040.
+
+The ephemeris contains 20, 8, and 9 terms for the longitude, latitude, and distance of the Moon, respectively. For the Sun, the distance is represented by a single sine wave, while its latitude and longitude are assumed to be 0.
+
+## Precision
+
+The root-mean-square deviation of the Moon's latitude, longitude, and distance in the fitted period is 40", 51", and 165 km, respectively. While this level of precision may be considered high by modern standards, it is sufficient for predicting eclipses, as demonstrated below with the total solar eclipse of August 2, 2027. Note that the ephemeris can predict eclipses even from the year 3000, rendering it accurate enough for many centuries. Eclipse animations can be created using the `eclipseAnimation.py` file.
 
 ![anigif](https://github.com/PedroKKr/fourierEphem/assets/52111108/2182c447-dc76-451c-a769-c4d6ca8b9768)
 
-The main usage of this ephemeris is to calculate the position of the Sun and the Moon for a given latitude and longitude. As of now, it can only calculate the altitude, not the azimuth, which will be futurely added.
+## Features
+
+The ephemeris currently supports the following calculations:
+
+- Position of the Sun and the Moon in the GSE system
+- Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
+- Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations
+- Obliquity of the ecliptic, mean and true anomaly of the Earth

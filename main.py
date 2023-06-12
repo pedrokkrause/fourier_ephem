@@ -169,7 +169,7 @@ def alt(obs,body) -> float:
     angle = np.pi/2 - anglew(body,obs)
     return np.rad2deg(angle)
 
-def az(obs,rotation,body) -> tuple:
+def az(obs,rotation,body) -> float:
     """
     Calculates the azimuth of an object for a given observer in the alt/az or horizontal coordinate system
 
