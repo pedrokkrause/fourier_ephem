@@ -22,3 +22,21 @@ The ephemeris currently supports the following calculations:
 - Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
 - Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations (Eclipse animations can be created using the `eclipseAnimation.py` file and eclipses within a time range can be found using the `searchEclipses.py` file)
 - Obliquity of the ecliptic, mean and true anomaly of the Earth
+
+### Example code
+```python
+from main import *
+
+lat, lon = -22.01134350210518, -47.89648023382425
+date = get_date(2023,6,28,20,0,0)
+
+observer, obs_rm = observer_position(date, lat, lon, return_rotation=True)
+moon = moon_position(date)
+sun = sun_position(date)
+
+moon_az, moon_alt = az(observer, obs_rm, moon), alt(observer, moon)
+sun_az, sun_alt = az(observer, obs_rm, sun), alt(observer, sun)
+
+print(f"The Moon is at an altitude of {moon_alt:.2f}° and azimuth of {moon_az:.2f}°")
+print(f"The Sun is at an altitude of {sun_alt:.2f}° and azimuth of {sun_az:.2f}°")
+```
