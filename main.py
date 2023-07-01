@@ -24,6 +24,16 @@ def get_date(year,month,day,hour=0,minute=0,second=0) -> float:
     date = datetime(year,month,day,hour,minute,second) - datetime(1899,12,30)
     return date.total_seconds()/86400
 
+def convert_date(t: float):
+    """
+    Converts a time float to a datetime object
+    
+    :param t: Date in Excel format. Days (24h) since 30/12/1899 00:00:00 UTC
+    :return: A datetime object corresponding to the input date.
+    """
+    date = datetime(1899,12,30) + timedelta(days=t)
+    return date
+
 def moon_gse(t: float) -> tuple:
     """
     Calculates the moon latitude(°), longitude(°) and radial distance(km) in Geocentric Solar Ecliptic (GSE) coordinates
