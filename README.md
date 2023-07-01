@@ -19,7 +19,7 @@ The root-mean-square deviation of the Moon's latitude, longitude, and distance i
 The ephemeris currently supports the following calculations:
 
 - Position of the Sun and the Moon in the GSE system
-- Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates
+- Altitude and azimuth of the Sun and the Moon for a given observer at specific latitude and longitude coordinates, with a simple atmospheric correction.
 - Angular distance and apparent intersection of the Sun and the Moon, particularly useful for eclipse calculations (Eclipse animations can be created using the `eclipseAnimation.py` file and eclipses within a time range can be found using the `searchEclipses.py` file)
 - Obliquity of the ecliptic, mean and true anomaly of the Earth
 
