@@ -188,6 +188,26 @@ def az(obs,rotation,body) -> float:
         azimuth = 180 - azimuth
     return azimuth
 
+def atmosphere_correction(altitude, temperature=15, pressure=1013):
+    """
+    The corrected altitude for an object due to the atmosphere for altitudes greater than 0.
+
+    :param altitude: altitude of the observed body in degrees
+    :param temperature: atmosphere temperature
+    :param pressure: atmosphere pressure
+    :return: the altitude of the body with atmospheric corrections in degrees
+    """
+    dT = temperature - 15
+    dP = pressure - 1013
+
+    c1 = 1.00001158 + dT*-0.0000000390 + dP*0.0000000122
+    c2 = -0.01303911 + dT*0.0000436960 + dP*-0.0000129220
+    c3 = 1.32591342 + dT*-0.0044503580 + dP*0.0013103002
+    c4 = 2.65776455 + dT*-0.0000027020 + dP*0.0000033669
+
+    new_altitude = c1*altitude+c2+c3/(altitude+c4)
+    return new_altitude
+
 def separation(obs,body1,body2) -> float:
     """
     The angular distance between two celestial bodies for a given observer
