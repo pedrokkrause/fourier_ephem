@@ -6,6 +6,8 @@ An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines appro
 
 This recreational project presents a simple ephemeris developed by performing a Fourier transform on the Geocentric Solar Ecliptic (GSE) coordinates of the Moon and applying a least squares fit. The data used for this project is sourced from NASA's [SSC Locator Form](https://sscweb.gsfc.nasa.gov/cgi-bin/Locator.cgi) and spans from 1959 to 2040.
 
+The motivation for creating this ephemeris was to show how one can predict the motion of the Sun and the Moon in a simple way without the need for the advanced methods used by modern ephemeris, with the original final goal of predicting solar eclipses. However, this project seeks to also support ephemerides for the planets and stars in the future.
+
 The ephemeris contains 20, 8, and 9 terms for the longitude, latitude, and distance of the Moon, respectively. For the Sun, the distance is represented by a single sine wave, while its latitude and longitude are assumed to be 0.
 
 ## Precision
