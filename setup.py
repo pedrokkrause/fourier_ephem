@@ -7,7 +7,7 @@ setup(
   description = 'An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation',
   author = 'Pedro Kleinschmitt Krause',
   url = 'https://github.com/PedroKKr/fourier_ephem',
-  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',
+  download_url = 'https://github.com/PedroKKr/fourier_ephem/archive/refs/tags/v1.0.0.tar.gz',
   keywords = ['fourier', 'ephemeris', 'astronomy'],
   install_requires=[
           'numpy',
