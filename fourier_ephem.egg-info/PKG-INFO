@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: fourier-ephem
-Version: 1.0.0
+Version: 1.0.1
 Summary: An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation
 Home-page: https://github.com/PedroKKr/fourier_ephem
 Download-URL: https://github.com/PedroKKr/fourier_ephem/archive/refs/tags/v1.0.0.tar.gz
@@ -23,6 +23,11 @@ License-File: LICENSE.txt
 # Fourier Ephemeris
 
 An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation.
+
+```
+pip install fourier-ephem
+```
+
 
 ## Introduction
 
@@ -49,7 +54,7 @@ The ephemeris currently supports the following calculations:
 
 ### Example code
 ```python
-from main import *
+from fourier_ephem import *
 
 lat, lon = -22.01134350210518, -47.89648023382425
 date = get_date(2023,6,28,20,0,0)

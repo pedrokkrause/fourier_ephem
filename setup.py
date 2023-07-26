@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name = 'fourier_ephem',
   packages = ['fourier_ephem'],
-  version = '1.0.0',
+  version = '1.0.1',
   license='MIT',
   description = 'An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation',
   long_description=open("README.md", 'r').read(),

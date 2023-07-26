@@ -1,9 +1,0 @@
-README.md
-setup.py
-src/fourier_ephem/fourier_ephem.egg-info/PKG-INFO
-src/fourier_ephem/fourier_ephem.egg-info/SOURCES.txt
-src/fourier_ephem/fourier_ephem.egg-info/dependency_links.txt
-src/fourier_ephem/fourier_ephem.egg-info/requires.txt
-src/fourier_ephem/fourier_ephem.egg-info/top_level.txt
-src/fourier_ephem/fourier_ephem.py
-src/fourier_ephem/fourier_ephem.egg-info/SOURCES.txt
