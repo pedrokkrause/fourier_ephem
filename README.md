@@ -2,6 +2,11 @@
 
 An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation.
 
+```
+pip install fourier-ephem
+```
+
+
 ## Introduction
 
 This recreational project presents a simple ephemeris developed by performing a Fourier transform on the Geocentric Solar Ecliptic (GSE) coordinates of the Moon and applying a least squares fit. The data used for this project is sourced from NASA's [SSC Locator Form](https://sscweb.gsfc.nasa.gov/cgi-bin/Locator.cgi) and spans from 1959 to 2040.
@@ -27,7 +32,7 @@ The ephemeris currently supports the following calculations:
 
 ### Example code
 ```python
-from main import *
+from fourier_ephem import *
 
 lat, lon = -22.01134350210518, -47.89648023382425
 date = get_date(2023,6,28,20,0,0)
