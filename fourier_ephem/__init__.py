@@ -1,1 +1,1 @@
-import fourier_ephem
+from .fourier_ephem import *

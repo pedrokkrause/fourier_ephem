@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: fourier-ephem
-Version: 1.0.1
+Version: 1.0.2
 Summary: An not-so-accurate ephemeris for the Sun and the Moon using a sum of sines approximation
 Home-page: https://github.com/PedroKKr/fourier_ephem
 Download-URL: https://github.com/PedroKKr/fourier_ephem/archive/refs/tags/v1.0.0.tar.gz
@@ -11,6 +11,7 @@ Classifier: Development Status :: 4 - Beta
 Classifier: Intended Audience :: Developers
 Classifier: Topic :: Software Development :: Build Tools
 Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.8
